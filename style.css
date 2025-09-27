@@ -1,0 +1,235 @@
+/* ---------- Basic reset ---------- */
+* { box-sizing: border-box; }
+html,body { height: 100%; margin: 0; }
+
+/* ---------- Cursors (default leaf, clickable hand) ---------- */
+body {
+  cursor: url("assets/leaf-cursor.png"), auto;
+  background: #000; /* keep black around edges while loading */
+  font-family: serif;
+}
+
+/* clickable override */
+.clickable { cursor: url("assets/hand-cursor.png"), pointer; }
+
+/* ---------- Scene layout ---------- */
+.scene {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.scene.active { display: block; }
+
+/* ---------- House background and full sizing ---------- */
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* keep aspect and cover screen */
+  display: block;
+}
+
+/* ---------- Knight (foreground) ---------- */
+.knight {
+  position: absolute;
+  left: 25%;
+  bottom: 0%;
+  transform: translateX(-50%);
+  width: min(45vw, 1080px);
+  max-width: 1080px;
+  transition: transform 220ms ease;
+  pointer-events: auto;
+}
+
+/* small hover feedback (subtle) */
+.knight:hover { transform: translateX(-50%) translateX(-6px); }
+
+/* ---------- Door centered on screen ---------- */
+.door {
+  position: absolute;
+  left: 51%;
+  top: 43.5%;
+  transform: translate(-50%, -50%);
+  width: min(4vw, 139px);
+  max-width: 139px;
+  transition: transform 1s ease, opacity 2s ease;
+  pointer-events: auto;
+}
+.door:hover { transform: translate(-50%, -50%); }
+
+/* ---------- Heads scene layout ---------- */
+.heads-wrapper {
+  position: absolute;
+  left: 3%;
+  top: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: calc(100% - 6%);
+  height: calc(100% - 25% - 120px); /* leave room bottom for axe */
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 450ms ease, opacity 400ms ease;
+}
+
+/* class added by JS when heads should appear */
+.heads-wrapper.enter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ---------- Base heads ---------- */
+.head {
+  display: block;
+  max-height: 100%;
+  max-width: 20vw;
+  height: auto;
+  width: auto;
+  flex: 0 0 auto;
+  margin: 0;
+  transition: transform 200ms ease;
+  transform-origin: bottom center;
+  gap: 0;
+  /* use a variable to keep size consistent */
+  
+}
+
+.head:hover {
+  transform: translateY(-6px);
+}
+
+
+/* ---------- Axe back button ---------- */
+.axe {
+  position: absolute;
+  right: 60px;
+  bottom: 60px;
+  width: min(20vw, 120px);
+  max-width: 140px;
+  opacity: 0.98;
+  transition: transform 160ms ease, opacity 160ms;
+}
+.axe:hover { transform: translateY(-6px); }
+
+/* ---------- Zoom clone styles (used by JS) ---------- */
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: #000000;
+  z-index: 999;
+  opacity: 1;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+}
+.zoom-clone {
+  position: fixed;
+  z-index: 9999;
+  will-change: transform, width, height, left, top;
+  transition: transform 650ms cubic-bezier(.2,.9,.2,1), opacity 200ms linear;
+  transform-origin: center center;
+  object-fit: cover;
+}
+.tree-asset {
+  display: block;
+  position: absolute;
+  left: 43%;
+  top: 50%; /* adjust as needed */
+  transform: translate(-50%, -50%);
+  max-width: 95vw;
+  max-height: 95vh;
+  width: auto;
+  height: auto;
+  z-index: 2;
+}
+@font-face {
+  font-family: 'MyFont';
+  src: url('assets/black.ttf') format('truetype');
+  /* Or use .woff2 and format('woff2') if you have that */
+  font-weight: normal;
+  font-style: normal;
+}
+.custom-text {
+  font-family: 'MyFont', serif;
+  font-size: 2rem;
+  color: #333;
+}
+
+.title-text {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 86%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: #a42;
+}
+
+.deer-title {
+  text-align: center;
+  position: absolute;
+  left: 38%;
+  bottom: 75%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: #c60;
+}
+
+.txt1{
+  text-align: center;
+  position: absolute;
+  left: 55%;
+  bottom: 20%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: rgb(0, 0, 0);
+  font-size: 1.5rem;
+}
+
+.boar-title {
+   text-align: center;
+  position: absolute;
+  left: 39%;
+  bottom: 73%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: #c60;
+}
+
+.txt2{
+  text-align: center;
+  position: absolute;
+  left: 55%;
+  bottom: 35%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: rgb(0, 0, 0);
+  font-size: 1.5rem;
+}
+
+.fox-title {
+  text-align: center;
+  position: absolute;
+  left: 38%;
+  bottom: 75%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: #c60;
+}
+
+.txt3{
+  text-align: center;
+  position: absolute;
+  left: 55%;
+  bottom: 21%;
+  transform: translateX(-50%);
+  z-index: 3;
+  color: rgb(0, 0, 0);
+  font-size: 1.5rem;
+}
